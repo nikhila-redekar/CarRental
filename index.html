@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACME Car Rental</title>
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <!-- Include any additional CSS files here -->
+    <style>
+        /* Add custom CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ACME Car Rental</h1>
+        <form id="carRentalForm">
+            <div class="form-group">
+                <label for="pickupDate">Pick-up Date:</label>
+                <input type="date" id="pickupDate" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="numberOfDays">Number of Days:</label>
+                <input type="number" id="numberOfDays" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Optional Services:</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tollTag">
+                    <label class="form-check-label" for="tollTag">Electronic Toll Tag ($3.95/day)</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="gps">
+                    <label class="form-check-label" for="gps">GPS ($2.95/day)</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="roadsideAssistance">
+                    <label class="form-check-label" for="roadsideAssistance">Roadside Assistance ($2.95/day)</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="under25">Under 25:</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="under25" id="yes">
+                    <label class="form-check-label" for="yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="under25" id="no" checked>
+                    <label class="form-check-label" for="no">No</label>
+                </div>
+            </div>
+            <button type="button" id="calculateBtn" class="btn btn-primary">Calculate Estimate Total Cost</button>
+        </form>
+        <div id="totalCost"></div>
+    </div>
+
+    <script src="scripts/bootstrap.min.js"></script>
+    <!-- Include any additional JavaScript files here -->
+    <script>
+        window.onload = function() {
+            const calculateBtn = document.getElementById("calculateBtn");
+            calculateBtn.onclick = calculateTotalCost;
+        };
+
+        function calculateTotalCost() {
+            const numberOfDays = document.getElementById("numberOfDays").value;
+            let basicRentalCost = 29.99 * numberOfDays;
+            let optionsCost = 0;
+
+            if (document.getElementById("tollTag").checked) {
+                optionsCost += 3.95 * numberOfDays;
+            }
+            if (document.getElementById("gps").checked) {
+                optionsCost += 2.95 * numberOfDays;
+            }
+            if (document.getElementById("roadsideAssistance").checked) {
+                optionsCost += 2.95 * numberOfDays;
+            }
+
+            let totalCost = basicRentalCost + optionsCost;
+
+            // Apply surcharge for drivers under 25
+            if (document.getElementById("yes").checked) {
+                totalCost += basicRentalCost * 0.3;
+            }
+
+            document.getElementById("totalCost").textContent = "Estimate Total Cost: $" + totalCost.toFixed(2);
+        }
+    </script>
+</body>
+</html>
